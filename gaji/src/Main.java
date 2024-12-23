@@ -4,5 +4,6 @@ public class Main {
         System.out.println("percobaan github");
 
         System.out.println("ini farhan");
+        System.out.println("ini akbar");
     }
 }
