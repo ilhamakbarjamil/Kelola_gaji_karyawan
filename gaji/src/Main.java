@@ -101,8 +101,37 @@ public class Main{
                 Employee emp = employeeList.get(selectedRow);
 
                 deleteFromDatabase(emp);
+
+                employeeList.remove(selectedRow);
+                tablemodel.removeRow(selectedRow);
+            } else {
+                JOptionPane.showMessageDialog(frame, "Please select a row to delete.", "Delete Error", JOptionPane.ERROR_MESSAGE);
             }
         });
+
+        searchButton.addActionListener(e -> {
+            String criteria = JOptionPane.showInputDialog(frame, "Masukkan Nama yang di cari:");
+            if (criteria != null && !criteria.isEmpty()) {
+                for (int i = 0; i < tablemodel.getRowCount(); i++) {
+                    if (tablemodel.getValueAt(i, 0).toString().equalsIgnoreCase(criteria)) {
+                        table.setRowSelectionInterval(i, i);
+                        JOptionPane.showMessageDialog(frame, "Karyawan ditemukan: " + criteria);
+                        return;
+                    }
+                }
+                JOptionPane.showMessageDialog(frame, "Karyawan tidak di temukan.", "hasil pencarian", JOptionPane.INFORMATION_MESSAGE);
+            }
+        });
+
+        sortButton.addActionListener(e -> {
+            employeeList.sort(Comparator.comparingDouble(emp -> emp.salary));
+            tablemodel.setRowCount(0);
+            for (Employee emp : employeeList) {
+                tablemodel.addRow(new Object[]{emp.name, emp.age, emp.salary, emp.position});
+            }
+        });
+
+        frame.setVisible(true);
     }
 }
 
