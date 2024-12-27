@@ -133,6 +133,40 @@ public class Main{
 
         frame.setVisible(true);
     }
+
+    private Connection connectToDatabase(){
+        try{
+            String url = "jdbc:mysql://localhost:3306/uap_proglan";
+            String user = "root";
+            String password = "";
+            return DriverManager.getConnection(url, user, password);
+        } catch(SQLException e){
+            JOptionPane.showMessageDialog(frame, "Database connection failed: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            return null;
+        }
+    }
+
+    private void loadDataFromDatabase() {
+        try (Connection conn = connectToDatabase()) {
+            if (conn != null) {
+                String sql = "SELECT * FROM employees";
+                Statement stmt = conn.createStatement();
+                ResultSet rs = stmt.executeQuery(sql);
+                while (rs.next()) {
+                    String name = rs.getString("name");
+                    int age = rs.getInt("age");
+                    double salary = rs.getDouble("salary");
+                    String position = rs.getString("position");
+                    employeeList.add(new Employee(name, age, salary, position));
+                    tablemodel.addRow(new Object[]{name, age, salary, position});
+                }
+            }
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(frame, "Failed to load data: " + ex.getMessage(), "Database Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    
 }
 
 
