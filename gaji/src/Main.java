@@ -37,7 +37,7 @@ public class Main{
 
         JScrollPane scrollPane = new JScrollPane(table);
 
-        JPanel inputJPanel = new JPanel(new GridLayout(5, 2));
+        JPanel inputPanel = new JPanel(new GridLayout(5, 2));
         JTextField nama_field = new JTextField();
         JTextField umur_field = new JTextField();
         JTextField gaji_field = new JTextField();
