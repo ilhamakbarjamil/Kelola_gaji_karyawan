@@ -7,5 +7,6 @@ public class Main {
         System.out.println("ini akbar");
         System.out.println("this is farhan");
         System.out.println("asu");
+        System.out.println("akbar");
     }
 }
