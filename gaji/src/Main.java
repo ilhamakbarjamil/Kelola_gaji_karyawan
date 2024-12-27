@@ -124,10 +124,10 @@ public class Main{
         });
 
         sortButton.addActionListener(e -> {
-            employeeList.sort(Comparator.comparingDouble(emp -> emp.salary));
+            employeeList.sort(Comparator.comparingDouble(emp -> emp.gaji));
             tablemodel.setRowCount(0);
             for (Employee emp : employeeList) {
-                tablemodel.addRow(new Object[]{emp.name, emp.age, emp.salary, emp.position});
+                tablemodel.addRow(new Object[]{emp.nama, emp.umur, emp.gaji, emp.posisi});
             }
         });
 
@@ -179,6 +179,26 @@ public class Main{
         } catch (Exception e) {
             JOptionPane.showMessageDialog(frame, "gagal menyimpan data: " + e.getMessage(), "Database Error", JOptionPane.ERROR_MESSAGE);
         }
+    }
+
+    private void deleteFromDatabase(Employee employee) {
+        try (Connection conn = connectToDatabase()) {
+            if (conn != null) {
+                String sql = "DELETE FROM employees WHERE name = ? AND age = ? AND salary = ? AND position = ?";
+                PreparedStatement stmt = conn.prepareStatement(sql);
+                stmt.setString(1, employee.nama);
+                stmt.setInt(2, employee.umur);
+                stmt.setDouble(3, employee.gaji);
+                stmt.setString(4, employee.posisi);
+                stmt.executeUpdate();
+            }
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(frame, "Failed to delete data: " + ex.getMessage(), "Database Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    public static void main(String[] args) {
+        new Main();
     }
 }
 
