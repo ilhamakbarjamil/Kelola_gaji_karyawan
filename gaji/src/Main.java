@@ -166,7 +166,20 @@ public class Main{
         }
     }
 
-    
+    private void saveToDatabase(Employee employee){
+        try (Connection conn = connectToDatabase()){
+            String sql = "INSERT INTO employees (name, age, salary, position) VALUES (?,?,?,?)";
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt.setString(1, employee.nama);
+            stmt.setInt(2, employee.umur);
+            stmt.setDouble(3, employee.gaji);
+            stmt.setString(4, employee.posisi);
+            stmt.executeUpdate();
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(frame, "gagal menyimpan data: " + e.getMessage(), "Database Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
 }
 
 
