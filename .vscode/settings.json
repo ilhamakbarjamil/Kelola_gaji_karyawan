@@ -1,6 +1,7 @@
 {
     "java.project.referencedLibraries": [
         "lib/**/*.jar",
-        "c:\\Users\\Ilham Akbar Jamil\\Downloads\\Compressed\\mysql-connector-j-9.1.0\\mysql-connector-j-9.1.0\\mysql-connector-j-9.1.0.jar"
+        "c:\\Users\\Ilham Akbar Jamil\\Downloads\\Compressed\\mysql-connector-j-9.1.0\\mysql-connector-j-9.1.0\\mysql-connector-j-9.1.0.jar",
+        "c:\\Users\\Ilham Akbar Jamil\\Downloads\\junit-jupiter-api-5.11.4.jar"
     ]
 }
