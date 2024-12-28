@@ -58,6 +58,8 @@ public class Main{
         JButton deleteButton = new JButton("Hapus Pilihan");
         JButton searchButton = new JButton("Cari");
         JButton sortButton = new JButton("Urutkan Gaji");
+        JButton updateSalaryButton = new JButton("Update Gaji");
+        buttonPanel.add(updateSalaryButton);
         buttonPanel.add(deleteButton);
         buttonPanel.add(searchButton);
         buttonPanel.add(sortButton);
@@ -123,6 +125,36 @@ public class Main{
             }
         });
 
+        updateSalaryButton.addActionListener(e -> {
+            int selectedRow = table.getSelectedRow();
+            if (selectedRow >= 0) {
+                String nama = tablemodel.getValueAt(selectedRow, 0).toString();
+                int umur = Integer.parseInt(tablemodel.getValueAt(selectedRow, 1).toString());
+                String posisi = tablemodel.getValueAt(selectedRow, 3).toString();
+        
+                String gajiBaruStr = JOptionPane.showInputDialog(frame, "Masukkan gaji baru untuk karyawan " + nama + ":");
+                if (gajiBaruStr != null && !gajiBaruStr.isEmpty()) {
+                    try {
+                        double gajiBaru = Double.parseDouble(gajiBaruStr);
+        
+                        Employee employee = employeeList.get(selectedRow);
+                        employee.gaji = gajiBaru;
+        
+                        tablemodel.setValueAt(gajiBaru, selectedRow, 2);
+        
+                        updateSalaryInDatabase(employee);
+        
+                        JOptionPane.showMessageDialog(frame, "Gaji berhasil diperbarui.");
+                    } catch (NumberFormatException ex) {
+                        JOptionPane.showMessageDialog(frame, "Masukkan gaji dalam format angka.", "Input Error", JOptionPane.ERROR_MESSAGE);
+                    }
+                }
+            } else {
+                JOptionPane.showMessageDialog(frame, "Pilih baris terlebih dahulu untuk memperbarui gaji.", "Update Error", JOptionPane.ERROR_MESSAGE);
+            }
+        });
+        
+
         sortButton.addActionListener(e -> {
             employeeList.sort(Comparator.comparingDouble(emp -> emp.gaji));
             tablemodel.setRowCount(0);
@@ -165,6 +197,23 @@ public class Main{
             JOptionPane.showMessageDialog(frame, "Failed to load data: " + ex.getMessage(), "Database Error", JOptionPane.ERROR_MESSAGE);
         }
     }
+
+    private void updateSalaryInDatabase(Employee employee) {
+        try (Connection conn = connectToDatabase()) {
+            if (conn != null) {
+                String sql = "UPDATE employees SET salary = ? WHERE name = ? AND age = ? AND position = ?";
+                PreparedStatement stmt = conn.prepareStatement(sql);
+                stmt.setDouble(1, employee.gaji);
+                stmt.setString(2, employee.nama);
+                stmt.setInt(3, employee.umur);
+                stmt.setString(4, employee.posisi);
+                stmt.executeUpdate();
+            }
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(frame, "Gagal memperbarui gaji: " + ex.getMessage(), "Database Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    
 
     private void saveToDatabase(Employee employee){
         try (Connection conn = connectToDatabase()){
