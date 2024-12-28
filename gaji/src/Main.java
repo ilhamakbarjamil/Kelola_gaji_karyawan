@@ -24,7 +24,7 @@ public class Main{
     private JFrame frame;
     private JTable table;
     private DefaultTableModel tablemodel;
-    private ArrayList<Employee> employeeList;
+    ArrayList<Employee> employeeList;
 
     public Main(){
         employeeList = new ArrayList<>();
@@ -71,30 +71,62 @@ public class Main{
 
         loadDataFromDatabase();
 
-        add_button.addActionListener(e ->{
-            String nama = nama_field.getText();
-            int umur;
-            double gaji;
-            String posisi = posisi_field.getText();
-
-            try {
-                umur = Integer.parseInt(umur_field.getText());
-                gaji = Double.parseDouble(gaji_field.getText());
-            } catch (NumberFormatException ex) {
-                JOptionPane.showMessageDialog(frame, "Masukkan gaji dengan benar.", "Input Error", JOptionPane.ERROR_MESSAGE);
+        add_button.addActionListener(e -> {
+            String nama = nama_field.getText().trim();
+            String umurText = umur_field.getText().trim();
+            String gajiText = gaji_field.getText().trim();
+            String posisi = posisi_field.getText().trim();
+            
+            if (nama.isEmpty() || umurText.isEmpty() || gajiText.isEmpty() || posisi.isEmpty()) {
+                JOptionPane.showMessageDialog(frame, 
+                    "Semua field harus diisi!", 
+                    "Input Error", 
+                    JOptionPane.ERROR_MESSAGE);
                 return;
             }
-
-            Employee employee = new Employee(nama, umur, gaji, posisi);
-            employeeList.add(employee);
-            tablemodel.addRow(new Object[]{nama, umur, gaji, posisi});
-
-            saveToDatabase(employee);
-
-            nama_field.setText("");
-            umur_field.setText("");
-            gaji_field.setText("");
-            posisi_field.setText("");
+        
+            for (Employee emp : employeeList) {
+                if (emp.nama.equalsIgnoreCase(nama)) {
+                    JOptionPane.showMessageDialog(frame, 
+                        "Nama karyawan sudah ada!", 
+                        "Input Error", 
+                        JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+            }
+            
+            int umur;
+            double gaji;
+        
+            try {
+                umur = Integer.parseInt(umurText);
+                gaji = Double.parseDouble(gajiText);
+        
+                if (umur <= 0 || gaji <= 0) {
+                    JOptionPane.showMessageDialog(frame, 
+                        "Umur dan gaji harus lebih besar dari 0!", 
+                        "Input Error", 
+                        JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+        
+                Employee employee = new Employee(nama, umur, gaji, posisi);
+                employeeList.add(employee);
+                tablemodel.addRow(new Object[]{nama, umur, gaji, posisi});
+        
+                saveToDatabase(employee);
+        
+                nama_field.setText("");
+                umur_field.setText("");
+                gaji_field.setText("");
+                posisi_field.setText("");
+        
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(frame, 
+                    "Umur harus berupa angka bulat dan gaji harus berupa angka!", 
+                    "Input Error", 
+                    JOptionPane.ERROR_MESSAGE);
+            }
         });
 
         deleteButton.addActionListener(e ->{
