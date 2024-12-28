@@ -128,3 +128,54 @@ Anda dapat mengembangkan aplikasi ini lebih lanjut dengan fitur berikut:
 ## Kontak
 Jika Anda memiliki pertanyaan atau saran, silakan hubungi pembuat aplikasi melalui email: [ilhamakbarjamil8.com]&[farhanuzie77@webmail.umm.ac.id].
 
+
+
+Pengujian (Testing)
+Berikut adalah beberapa pengujian yang disarankan untuk memastikan kode berfungsi dengan baik:
+
+1. Unit Testing untuk Database Connection
+
+Gunakan framework seperti JUnit untuk memeriksa koneksi database:
+
+import org.junit.jupiter.api.Test;
+
+import java.sql.Connection;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+class DatabaseConnectionTest {
+    @Test
+    void testDatabaseConnection() {
+        Main mainApp = new Main();
+        Connection connection = mainApp.connectToDatabase();
+        assertNotNull(connection, "Database connection should not be null");
+    }
+}
+2. Unit Testing untuk CRUD
+
+Pengujian untuk fungsi menyimpan, mengambil, dan menghapus data dari database.
+
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+class EmployeeCRUDTest {
+    @Test
+    void testSaveToDatabase() {
+        Main mainApp = new Main();
+        Employee emp = new Employee("Test", 25, 5000, "Engineer");
+
+        assertDoesNotThrow(() -> mainApp.saveToDatabase(emp));
+    }
+
+    @Test
+    void testDeleteFromDatabase() {
+        Main mainApp = new Main();
+        Employee emp = new Employee("Test", 25, 5000, "Engineer");
+
+        assertDoesNotThrow(() -> mainApp.deleteFromDatabase(emp));
+    }
+}
+3. Functional Testing untuk GUI
+
+Untuk pengujian GUI, library seperti AssertJ atau Fest dapat digunakan untuk memvalidasi interaksi dengan antarmuka.
