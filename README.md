@@ -179,3 +179,65 @@ class EmployeeCRUDTest {
 3. Functional Testing untuk GUI
 
 Untuk pengujian GUI, library seperti AssertJ atau Fest dapat digunakan untuk memvalidasi interaksi dengan antarmuka.
+
+
+
+
+Jika Anda ingin menambahkan fitur Update Gaji pada program yang sudah Anda miliki, berikut adalah langkah-langkah dan bagian kode yang perlu ditambahkan:
+
+1. Tambahkan Tombol Update Gaji
+Pada bagian UI, tambahkan tombol Update Gaji. Cari bagian kode yang mendefinisikan tombol-tombol di dalam buttonPanel, dan tambahkan kode berikut:
+
+JButton updateSalaryButton = new JButton("Update Gaji");
+buttonPanel.add(updateSalaryButton);
+2. Logika untuk Tombol Update Gaji
+Tambahkan logika ketika tombol Update Gaji ditekan. Ini adalah bagian kode yang akan meminta gaji baru dari pengguna, memperbarui data karyawan, dan menyimpannya ke database:
+
+updateSalaryButton.addActionListener(e -> {
+    int selectedRow = table.getSelectedRow();
+    if (selectedRow >= 0) {
+        String nama = tablemodel.getValueAt(selectedRow, 0).toString();
+        int umur = Integer.parseInt(tablemodel.getValueAt(selectedRow, 1).toString());
+        String posisi = tablemodel.getValueAt(selectedRow, 3).toString();
+
+        String gajiBaruStr = JOptionPane.showInputDialog(frame, "Masukkan gaji baru untuk karyawan " + nama + ":");
+        if (gajiBaruStr != null && !gajiBaruStr.isEmpty()) {
+            try {
+                double gajiBaru = Double.parseDouble(gajiBaruStr);
+
+                // Perbarui data di tabel dan daftar karyawan
+                Employee employee = employeeList.get(selectedRow);
+                employee.gaji = gajiBaru;
+
+                tablemodel.setValueAt(gajiBaru, selectedRow, 2);
+
+                // Perbarui data di database
+                updateSalaryInDatabase(employee);
+
+                JOptionPane.showMessageDialog(frame, "Gaji berhasil diperbarui.");
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(frame, "Masukkan gaji dalam format angka.", "Input Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    } else {
+        JOptionPane.showMessageDialog(frame, "Pilih baris terlebih dahulu untuk memperbarui gaji.", "Update Error", JOptionPane.ERROR_MESSAGE);
+    }
+});
+3. Fungsi untuk Update Gaji di Database
+Tambahkan fungsi untuk memperbarui gaji karyawan di database. Tambahkan metode berikut di kelas Anda:
+
+private void updateSalaryInDatabase(Employee employee) {
+    try (Connection conn = connectToDatabase()) {
+        if (conn != null) {
+            String sql = "UPDATE employees SET salary = ? WHERE name = ? AND age = ? AND position = ?";
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt.setDouble(1, employee.gaji);
+            stmt.setString(2, employee.nama);
+            stmt.setInt(3, employee.umur);
+            stmt.setString(4, employee.posisi);
+            stmt.executeUpdate();
+        }
+    } catch (SQLException ex) {
+        JOptionPane.showMessageDialog(frame, "Gagal memperbarui gaji: " + ex.getMessage(), "Database Error", JOptionPane.ERROR_MESSAGE);
+    }
+}
