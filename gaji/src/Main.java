@@ -84,6 +84,14 @@ public class Main{
                     JOptionPane.ERROR_MESSAGE);
                 return;
             }
+
+            if (!nama.matches("[a-zA-Z\\s]+")) {
+                JOptionPane.showMessageDialog(frame, 
+                    "Nama hanya boleh berisi huruf!", 
+                    "Input Error", 
+                    JOptionPane.ERROR_MESSAGE);
+                return;
+            }
         
             for (Employee emp : employeeList) {
                 if (emp.nama.equalsIgnoreCase(nama)) {

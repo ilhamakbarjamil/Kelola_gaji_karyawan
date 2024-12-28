@@ -2,6 +2,12 @@
     "java.project.referencedLibraries": [
         "lib/**/*.jar",
         "c:\\Users\\Ilham Akbar Jamil\\Downloads\\Compressed\\mysql-connector-j-9.1.0\\mysql-connector-j-9.1.0\\mysql-connector-j-9.1.0.jar",
-        "c:\\Users\\Ilham Akbar Jamil\\Downloads\\junit-jupiter-api-5.11.4.jar"
-    ]
+        "c:\\Users\\Ilham Akbar Jamil\\Downloads\\junit-jupiter-api-5.11.4.jar",
+        "gaji/lib/apiguardian-api-1.1.2.jar",
+        "gaji/lib/junit-jupiter-api-5.11.4.jar",
+        "gaji/lib/junit-jupiter-engine-5.11.4.jar",
+        "gaji/lib/junit-platform-commons-1.9.2.jar",
+        "gaji/lib/junit-platform-engine-1.9.2.jar"
+    ],
+    "java.debug.settings.onBuildFailureProceed": true
 }
