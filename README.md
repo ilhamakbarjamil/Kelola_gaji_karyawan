@@ -126,4 +126,9 @@ Anda dapat mengembangkan aplikasi ini lebih lanjut dengan fitur berikut:
 ---
 
 ## Kontak
+<<<<<<< HEAD
 Jika Anda memiliki pertanyaan atau saran, silakan hubungi pembuat aplikasi melalui email: [ilhamakbarjamil8.com] && [farhanuzie77@webmail.umm.ac.id].
+=======
+Jika Anda memiliki pertanyaan atau saran, silakan hubungi pembuat aplikasi melalui email: [ilhamakbarjamil8.com] && [farhanuzie77@webmail.umm.ac.id].
+
+>>>>>>> a0834e275ccc7633dcf7165927fb0d863b7aff3a
